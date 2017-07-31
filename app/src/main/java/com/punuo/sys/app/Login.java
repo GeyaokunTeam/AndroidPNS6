@@ -1,11 +1,11 @@
 package com.punuo.sys.app;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.punuo.sys.app.Manager.IUserLogin;
 import com.punuo.sys.app.Manager.UserLoginManager;
 
 /**
@@ -13,7 +13,7 @@ import com.punuo.sys.app.Manager.UserLoginManager;
  * Date 2017/7/31
  */
 
-public class Login extends Activity implements View.OnClickListener, IUserLogin {
+public class Login extends BaseActivity implements View.OnClickListener, IUserLogin {
 
 
     private static final String TAG = Login.class.getSimpleName();
@@ -25,7 +25,7 @@ public class Login extends Activity implements View.OnClickListener, IUserLogin 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         init();
-        initMagager();
+        initManager();
         initView();
     }
 
@@ -35,10 +35,8 @@ public class Login extends Activity implements View.OnClickListener, IUserLogin 
         login.setOnClickListener(this);
     }
 
-    private void initMagager() {
-        mUserLoginManager = new UserLoginManager(this);
-
-        mUserLoginManager.setIUserLogin(this);
+    private void initManager() {
+        mUserLoginManager = new UserLoginManager(this,this);
     }
 
     private void init() {
@@ -75,7 +73,7 @@ public class Login extends Activity implements View.OnClickListener, IUserLogin 
 
     @Override
     public void OnLogin1(String salt, String seed) {
-        String password = "1234567";
+        String password = "123456";
         SHA1 sha1 = SHA1.getInstance();
         password = sha1.hashData(salt + password);
         password = sha1.hashData(seed + password);
@@ -85,25 +83,25 @@ public class Login extends Activity implements View.OnClickListener, IUserLogin 
     @Override
     public void OnLogin2() {
         //TODO 跳转，开启心跳保活线程
-        Log.i(TAG, "用户注册成功");
-        GlobalSetting.Timeout = false;
+        Log.v(TAG, "用户注册成功");
+        GlobalSetting.userLogined = true;
     }
 
     @Override
     public void OnLogin1Failed(int Error) {
         Log.e(TAG, "OnLogin1Failed: " + Error);
-        GlobalSetting.Timeout = false;
+        GlobalSetting.userLogined = false;
     }
 
     @Override
     public void OnLogin2Failed(int Error) {
         Log.e(TAG, "OnLogin2Failed: " + Error);
-        GlobalSetting.Timeout = false;
+        GlobalSetting.userLogined = false;
     }
 
     @Override
     public void OnLoginTimeOut() {
         Log.e(TAG, "OnLogin2Failed: 服务器连接超时");
-        GlobalSetting.Timeout = true;
+        GlobalSetting.userLogined = false;
     }
 }

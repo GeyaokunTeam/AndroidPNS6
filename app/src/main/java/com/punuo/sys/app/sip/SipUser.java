@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.punuo.sys.app.GlobalSetting;
-import com.punuo.sys.app.IUserLogin;
+import com.punuo.sys.app.Manager.IUserLogin;
 import com.punuo.sys.app.Status;
 import com.punuo.sys.app.UserProfile;
 
@@ -88,10 +88,12 @@ public class SipUser extends SipProvider {
                         responseParse(msg);
                         break;
                     case 401://密码错误
-                        mIUserLogin.OnLogin2Failed(Status.REGISTER_PASSWORD_ERROR);
+                        if (mIUserLogin != null)
+                            mIUserLogin.OnLogin2Failed(Status.REGISTER_PASSWORD_ERROR);
                         break;
                     case 402://账号不存在
-                        mIUserLogin.OnLogin1Failed(Status.REGISTER_ACCOUNT_NOT_EXSIT);
+                        if (mIUserLogin != null)
+                            mIUserLogin.OnLogin1Failed(Status.REGISTER_ACCOUNT_NOT_EXSIT);
                         break;
                 }
             }
@@ -152,6 +154,17 @@ public class SipUser extends SipProvider {
                             Log.e(TAG, "掉线");
 
                         }
+                        break;
+                    case "login_response":
+                        if (!GlobalSetting.userLogined){
+                            if (mIUserLogin!=null){
+                                mIUserLogin.OnLogin2();
+                            }
+                        }else {
+                            Log.v(TAG,"用户收到心跳回复");
+                        }
+                        break;
+
                 }
             } catch (Exception e) {
                 Log.e(TAG, "responseParse: ", e);

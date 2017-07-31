@@ -1,4 +1,4 @@
-package com.punuo.sys.app;
+package com.punuo.sys.app.Manager;
 
 /**
  * Author chenhan

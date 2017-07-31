@@ -13,14 +13,14 @@ import org.zoolu.sip.address.SipURL;
 
 public class GlobalSetting {
 
-    public static boolean Timeout = true;
+
     private SharedPreferences sharedPreferences;
 
-    public static final String PREFERENCES_FILE = "setting";
+    private static final String PREFERENCES_FILE = "setting";
     //服务器名
-    public static final String SERVER_NAME = "rvsup";
+    private static final String SERVER_NAME = "rvsup";
     //服务器ID
-    public static final String SERVER_ID = "330100000010000090";
+    private static final String SERVER_ID = "330100000010000090";
     //用户端口
     public static final int SERVER_PORT_USER = 6061;
     //设备端口
@@ -34,7 +34,7 @@ public class GlobalSetting {
 
     public static int hostPort = -1;
     //服务器ip
-    public static String serverIp = "101.69.255.135";
+    public static String serverIp = "101.69.255.132";
     //用户账号
     public static String userAccount;
     //用户密码
@@ -51,6 +51,10 @@ public class GlobalSetting {
     public static NameAddress dev_from;
     //sip消息(用户)请求视频设备地址
     public static NameAddress toDev;
+
+    public static boolean userLogined = false;
+
+    public static boolean devLogined=false;
 
     private static GlobalSetting mInstance;
 
