@@ -1,5 +1,7 @@
 package com.punuo.sys.app.ui;
 
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -8,11 +10,11 @@ import android.widget.Button;
 import com.punuo.sys.app.BaseApp;
 import com.punuo.sys.app.GlobalSetting;
 import com.punuo.sys.app.Manager.DevLoginManager;
+import com.punuo.sys.app.Manager.UserLoginManager;
 import com.punuo.sys.app.R;
 import com.punuo.sys.app.SHA1;
 import com.punuo.sys.app.i.IDevLogin;
 import com.punuo.sys.app.i.IUserLogin;
-import com.punuo.sys.app.Manager.UserLoginManager;
 
 /**
  * Author chenhan
@@ -34,11 +36,12 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
         init();
         initManager();
         initView();
+        setBackground();
     }
 
     private void initView() {
         login = (Button) findViewById(R.id.login);
-
+        rootView = findViewById(R.id.rootView);
         login.setOnClickListener(this);
     }
 
@@ -57,11 +60,13 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
     @Override
     protected void onResume() {
         super.onResume();
+        setBackground();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        rootView.setBackground(null);
     }
 
     @Override
@@ -77,6 +82,15 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
                 mUserLoginManager.checkTimeout();
                 break;
         }
+    }
+
+    @Override
+    public void setBackground() {
+        rootView.setBackground(getBackground());
+    }
+
+    public Drawable getBackground() {
+        return getResources().getDrawable(R.drawable.pn_login_bg);
     }
 
     @Override
@@ -124,6 +138,8 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
     public void OnDevLogin2() {
         Log.v(TAG, "设备注册成功");
         GlobalSetting.devLogined = true;
+        //TODO 跳转
+        startActivity(new Intent(Login.this, Main.class));
     }
 
     @Override
