@@ -27,6 +27,8 @@ import java.util.concurrent.Executors;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import static com.punuo.sys.app.GlobalSetting.user;
+
 /**
  * Author chenhan
  * Date 2017/7/31
@@ -161,14 +163,14 @@ public class Sip extends SipProvider {
                             Element saltElement = (Element) root.getElementsByTagName("salt").item(0);
                             Element phoneNumElement = (Element) root.getElementsByTagName("phone_num").item(0);
                             Element realNameElement = (Element) root.getElementsByTagName("real_name").item(0);
-                            UserProfile user = new UserProfile();
+                            GlobalSetting.user = new UserProfile();
                             String seed;
                             String salt;
-                            user.userId = userIdElement.getFirstChild().getNodeValue();
+                            GlobalSetting.user.userId = userIdElement.getFirstChild().getNodeValue();
                             if (realNameElement != null)
-                                user.userRealName = realNameElement.getFirstChild().getNodeValue();
+                                GlobalSetting.user.userRealName = realNameElement.getFirstChild().getNodeValue();
                             if (phoneNumElement != null)
-                                user.userPhoneNumber = phoneNumElement.getFirstChild().getNodeValue();
+                                GlobalSetting.user.userPhoneNumber = phoneNumElement.getFirstChild().getNodeValue();
                             if (seedElement != null) {
                                 seed = seedElement.getFirstChild().getNodeValue();
                             } else {
@@ -183,7 +185,7 @@ public class Sip extends SipProvider {
                                     mIUserLogin.OnUserLogin1Failed(Status.REGISTER_SALT_LOST);
                                 break;
                             }
-                            SipURL local = new SipURL(user.userId, GlobalSetting.serverIp, GlobalSetting.SERVER_PORT_USER);
+                            SipURL local = new SipURL(GlobalSetting.user.userId, GlobalSetting.serverIp, GlobalSetting.SERVER_PORT_USER);
                             GlobalSetting.user_from.setAddress(local);
                             Log.v(TAG, "收到用户注册第一步响应");
                             if (mIUserLogin != null)
@@ -232,7 +234,7 @@ public class Sip extends SipProvider {
                 switch (type) {
 
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 Log.e(TAG, "requestParseUser: ", e);
             }
         } else {
@@ -294,7 +296,7 @@ public class Sip extends SipProvider {
                 switch (type) {
 
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 Log.e(TAG, "requestParseDev: ", e);
             }
         } else {
