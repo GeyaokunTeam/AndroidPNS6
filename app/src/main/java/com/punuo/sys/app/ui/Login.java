@@ -1,13 +1,17 @@
-package com.punuo.sys.app;
+package com.punuo.sys.app.ui;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.punuo.sys.app.BaseApp;
+import com.punuo.sys.app.GlobalSetting;
 import com.punuo.sys.app.Manager.DevLoginManager;
-import com.punuo.sys.app.Manager.IDevLogin;
-import com.punuo.sys.app.Manager.IUserLogin;
+import com.punuo.sys.app.R;
+import com.punuo.sys.app.SHA1;
+import com.punuo.sys.app.i.IDevLogin;
+import com.punuo.sys.app.i.IUserLogin;
 import com.punuo.sys.app.Manager.UserLoginManager;
 
 /**
@@ -120,19 +124,11 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
     public void OnDevLogin2() {
         Log.v(TAG, "设备注册成功");
         GlobalSetting.devLogined = true;
-
     }
 
     @Override
-    public void OnDevLogin1Failed() {
-        Log.e(TAG, "设备注册第一步失败 ");
-        GlobalSetting.devLogined = false;
-
-    }
-
-    @Override
-    public void OnDevLogin2Failed() {
-        Log.e(TAG, "设备注册第二步失败");
+    public void OnDevLoginFailed() {
+        Log.e(TAG, "设备注册失败");
         GlobalSetting.devLogined = false;
     }
 

@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.punuo.sys.app.GlobalSetting;
 import com.punuo.sys.app.ThreadPool;
+import com.punuo.sys.app.i.IDevLogin;
+import com.punuo.sys.app.i.IUserLogin;
 import com.punuo.sys.app.sip.Sip;
 
 import java.util.Random;

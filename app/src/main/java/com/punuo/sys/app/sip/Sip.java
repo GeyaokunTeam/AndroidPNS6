@@ -4,8 +4,8 @@ import android.content.Context;
 import android.util.Log;
 
 import com.punuo.sys.app.GlobalSetting;
-import com.punuo.sys.app.Manager.IDevLogin;
-import com.punuo.sys.app.Manager.IUserLogin;
+import com.punuo.sys.app.i.IDevLogin;
+import com.punuo.sys.app.i.IUserLogin;
 import com.punuo.sys.app.Status;
 import com.punuo.sys.app.UserProfile;
 
@@ -125,9 +125,13 @@ public class Sip extends SipProvider {
                     case 200:
                         responseParseDev(msg);
                         break;
+                    case 401:
+                        if (iDevLogin != null)
+                            iDevLogin.OnDevLoginFailed();
+                        break;
                     case 500:
-                        if (mIUserLogin != null)
-                            mIUserLogin.OnServerError();
+                        if (iDevLogin != null)
+                            iDevLogin.OnServerError();
                         break;
                 }
             }
@@ -218,6 +222,19 @@ public class Sip extends SipProvider {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder;
             Document document;
+            try {
+                builder = factory.newDocumentBuilder();
+                document = builder.parse(is);
+                Element root = document.getDocumentElement();
+                final String type = root.getTagName();
+                Element codeElement;
+                String code;
+                switch (type) {
+
+                }
+            }catch (Exception e){
+                Log.e(TAG, "requestParseUser: ", e);
+            }
         } else {
             Log.d(TAG + "requestParseUser", "BODY IS NULL");
         }
@@ -267,6 +284,19 @@ public class Sip extends SipProvider {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder;
             Document document;
+            try {
+                builder = factory.newDocumentBuilder();
+                document = builder.parse(is);
+                Element root = document.getDocumentElement();
+                final String type = root.getTagName();
+                Element codeElement;
+                String code;
+                switch (type) {
+
+                }
+            }catch (Exception e){
+                Log.e(TAG, "requestParseDev: ", e);
+            }
         } else {
             Log.d(TAG + "requestParseDev", "BODY IS NULL");
         }

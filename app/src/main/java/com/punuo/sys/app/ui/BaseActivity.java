@@ -1,4 +1,4 @@
-package com.punuo.sys.app;
+package com.punuo.sys.app.ui;
 
 import android.app.Activity;
 import android.os.Bundle;

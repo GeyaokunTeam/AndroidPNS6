@@ -1,4 +1,4 @@
-package com.punuo.sys.app.Manager;
+package com.punuo.sys.app.i;
 
 /**
  * Author chzjy
@@ -10,9 +10,7 @@ public interface IDevLogin extends ILogin {
 
     void OnDevLogin2();
 
-    void OnDevLogin1Failed();
-
-    void OnDevLogin2Failed();
+    void OnDevLoginFailed();
 
     void OnDevLoginTimeOut();
 }
