@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.punuo.sys.app.GlobalSetting;
+import com.punuo.sys.app.Manager.IDevLogin;
 import com.punuo.sys.app.Manager.IUserLogin;
 import com.punuo.sys.app.Status;
 import com.punuo.sys.app.UserProfile;
@@ -31,25 +32,39 @@ import javax.xml.parsers.DocumentBuilderFactory;
  * Date 2017/7/31
  */
 
-public class SipUser extends SipProvider {
+public class Sip extends SipProvider {
     private Context mContext;
-    private static final String TAG = "SipUser";
+    private static final String TAG = "Sip";
     private static String[] PROTOCOLS = {"udp"};
     //线程池
-    private ExecutorService pool = Executors.newFixedThreadPool(3);
+    private ExecutorService pool = Executors.newFixedThreadPool(5);
     IUserLogin mIUserLogin;
+    IDevLogin iDevLogin;
+
+    private static Sip instance;
+
+    public static Sip getInstance(String via_addr, int host_port, Context context) {
+        if (instance == null) {
+            instance = new Sip(via_addr, host_port, context);
+        }
+        return instance;
+    }
 
     public void setIUserLogin(IUserLogin mIUserLogin) {
         this.mIUserLogin = mIUserLogin;
     }
 
-    public SipUser(String via_addr, int host_port, Context context) {
+    public void setiDevLogin(IDevLogin iDevLogin) {
+        this.iDevLogin = iDevLogin;
+    }
+
+    private Sip(String via_addr, int host_port, Context context) {
         super(via_addr, host_port, PROTOCOLS, null);
         this.mContext = context;
     }
 
-    public TransportConnId sendMessage(Message msg) {
-        return sendMessage(msg, GlobalSetting.serverIp, GlobalSetting.SERVER_PORT_USER);
+    public TransportConnId sendMessage(Message msg, int destPort) {
+        return sendMessage(msg, GlobalSetting.serverIp, destPort);
     }
 
     public TransportConnId sendMessage(final Message msg, final String destAddr, final int destPort) {
@@ -80,27 +95,46 @@ public class SipUser extends SipProvider {
         int port = msg.getRemotePort();
         if (port == GlobalSetting.SERVER_PORT_USER) {
             if (msg.isRequest()) {
-
+                requestParseUser(msg);
             } else {
                 int code = msg.getStatusLine().getCode();
                 switch (code) {
                     case 200:
-                        responseParse(msg);
+                        responseParseUser(msg);
                         break;
                     case 401://密码错误
                         if (mIUserLogin != null)
-                            mIUserLogin.OnLogin2Failed(Status.REGISTER_PASSWORD_ERROR);
+                            mIUserLogin.OnUserLogin2Failed(Status.REGISTER_PASSWORD_ERROR);
                         break;
                     case 402://账号不存在
                         if (mIUserLogin != null)
-                            mIUserLogin.OnLogin1Failed(Status.REGISTER_ACCOUNT_NOT_EXSIT);
+                            mIUserLogin.OnUserLogin1Failed(Status.REGISTER_ACCOUNT_NOT_EXSIT);
+                        break;
+                    case 500:
+                        if (mIUserLogin != null)
+                            mIUserLogin.OnServerError();
+                        break;
+                }
+            }
+        } else if (port == GlobalSetting.SERVER_PORT_DEV) {
+            if (msg.isRequest()) {
+                requestParseDev(msg);
+            } else {
+                int code = msg.getStatusLine().getCode();
+                switch (code) {
+                    case 200:
+                        responseParseDev(msg);
+                        break;
+                    case 500:
+                        if (mIUserLogin != null)
+                            mIUserLogin.OnServerError();
                         break;
                 }
             }
         }
     }
 
-    private void responseParse(Message msg) {
+    private void responseParseUser(Message msg) {
         String body = msg.getBody();
         if (body != null) {
             StringReader sr = new StringReader(body);
@@ -135,42 +169,106 @@ public class SipUser extends SipProvider {
                                 seed = seedElement.getFirstChild().getNodeValue();
                             } else {
                                 if (mIUserLogin != null)
-                                    mIUserLogin.OnLogin1Failed(Status.REGISTER_SEED_LOST);
+                                    mIUserLogin.OnUserLogin1Failed(Status.REGISTER_SEED_LOST);
                                 break;
                             }
                             if (saltElement != null) {
                                 salt = saltElement.getFirstChild().getNodeValue();
                             } else {
                                 if (mIUserLogin != null)
-                                    mIUserLogin.OnLogin1Failed(Status.REGISTER_SALT_LOST);
+                                    mIUserLogin.OnUserLogin1Failed(Status.REGISTER_SALT_LOST);
                                 break;
                             }
                             SipURL local = new SipURL(user.userId, GlobalSetting.serverIp, GlobalSetting.SERVER_PORT_USER);
                             GlobalSetting.user_from.setAddress(local);
                             Log.v(TAG, "收到用户注册第一步响应");
                             if (mIUserLogin != null)
-                                mIUserLogin.OnLogin1(salt, seed);
+                                mIUserLogin.OnUserLogin1(salt, seed);
                         } else {
                             Log.e(TAG, "掉线");
 
                         }
                         break;
                     case "login_response":
-                        if (!GlobalSetting.userLogined){
-                            if (mIUserLogin!=null){
-                                mIUserLogin.OnLogin2();
+                        if (!GlobalSetting.userLogined) {
+                            if (mIUserLogin != null) {
+                                mIUserLogin.OnUserLogin2();
                             }
-                        }else {
-                            Log.v(TAG,"用户收到心跳回复");
+                        } else {
+                            Log.v(TAG, "用户收到心跳回复");
                         }
                         break;
-
+                    default:
+                        break;
                 }
             } catch (Exception e) {
-                Log.e(TAG, "responseParse: ", e);
+                Log.e(TAG, "responseParseUser: ", e);
             }
         } else {
-            Log.i(TAG + "responseParse", "BODY IS NULL");
+            Log.d(TAG + "responseParseUser", "BODY IS NULL");
+        }
+    }
+
+
+    private void requestParseUser(Message msg) {
+        String body = msg.getBody();
+        if (body != null) {
+            StringReader sr = new StringReader(body);
+            InputSource is = new InputSource(sr);
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder;
+            Document document;
+        } else {
+            Log.d(TAG + "requestParseUser", "BODY IS NULL");
+        }
+    }
+
+    private void responseParseDev(Message msg) {
+        String body = msg.getBody();
+        if (body != null) {
+            StringReader sr = new StringReader(body);
+            InputSource is = new InputSource(sr);
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder;
+            Document document;
+            try {
+                builder = factory.newDocumentBuilder();
+                document = builder.parse(is);
+                Element root = document.getDocumentElement();
+                final String type = root.getTagName();
+                Element codeElement;
+                String code;
+                switch (type) {
+                    case "negotiate_response":
+                        if (iDevLogin != null)
+                            iDevLogin.OnDevLogin1();
+                        break;
+                    case "login_response":
+                        if (!GlobalSetting.devLogined) {
+                            iDevLogin.OnDevLogin2();
+                        } else {
+                            Log.v(TAG, "用户收到心跳回复");
+                        }
+                        break;
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "responseParseDev: ", e);
+            }
+        } else {
+            Log.d(TAG + "responseParseDev", "BODY IS NULL");
+        }
+    }
+
+    private void requestParseDev(Message msg) {
+        String body = msg.getBody();
+        if (body != null) {
+            StringReader sr = new StringReader(body);
+            InputSource is = new InputSource(sr);
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder;
+            Document document;
+        } else {
+            Log.d(TAG + "requestParseDev", "BODY IS NULL");
         }
     }
 }

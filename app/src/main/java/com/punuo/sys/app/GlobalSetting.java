@@ -27,7 +27,7 @@ public class GlobalSetting {
     public static final int SERVER_PORT_DEV = 6060;
     //用户注册获取用户ID使用
     public static final String REGISTER_ID = "330100000010000190";
-
+    //用户Id
     public static String userId;
 
     public boolean debug = false;
@@ -39,6 +39,8 @@ public class GlobalSetting {
     public static String userAccount;
     //用户密码
     public static String passWord;
+    //设备Id
+    public static String devId = "310023000100020001";
     //sip消息From地址
     public static NameAddress user_from;
     //sip消息To地址（发给服务器）
@@ -54,7 +56,7 @@ public class GlobalSetting {
 
     public static boolean userLogined = false;
 
-    public static boolean devLogined=false;
+    public static boolean devLogined = false;
 
     private static GlobalSetting mInstance;
 

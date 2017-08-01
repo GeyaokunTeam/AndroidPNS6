@@ -5,6 +5,14 @@ package com.punuo.sys.app.Manager;
  * Date 2016/12/19.
  */
 
-public class IDevLogin {
+public interface IDevLogin extends ILogin {
+    void OnDevLogin1();
 
+    void OnDevLogin2();
+
+    void OnDevLogin1Failed();
+
+    void OnDevLogin2Failed();
+
+    void OnDevLoginTimeOut();
 }

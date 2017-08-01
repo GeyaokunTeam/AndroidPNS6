@@ -5,14 +5,14 @@ package com.punuo.sys.app.Manager;
  * Date 2017/7/31
  */
 
-public interface IUserLogin {
-    void OnLogin1(String salt, String seed);
+public interface IUserLogin extends ILogin {
+    void OnUserLogin1(String salt, String seed);
 
-    void OnLogin2();
+    void OnUserLogin2();
 
-    void OnLogin1Failed(int Error);
+    void OnUserLogin1Failed(int Error);
 
-    void OnLogin2Failed(int Error);
+    void OnUserLogin2Failed(int Error);
 
-    void OnLoginTimeOut();
+    void OnUserLoginTimeOut();
 }

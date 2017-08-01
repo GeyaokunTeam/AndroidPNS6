@@ -18,9 +18,9 @@ import java.util.TimerTask;
  * Date 2017/7/31
  */
 
-public class UserLoginManager extends BaseManager {
+public class UserLoginManager extends BaseManager<IUserLogin> {
 
-    IUserLogin iUserLogin;
+    private IUserLogin iUserLogin;
 
     public UserLoginManager(Context context, IUserLogin iUserLogin) {
         super(context, iUserLogin);
@@ -31,14 +31,14 @@ public class UserLoginManager extends BaseManager {
         GlobalSetting.userLogined = false;
         SipURL local = new SipURL(GlobalSetting.REGISTER_ID, GlobalSetting.serverIp, GlobalSetting.SERVER_PORT_USER);
         GlobalSetting.user_from = new NameAddress(userAccount, local);
-        Message register = SipMessageFactory.createRegisterRequest(sipUser, GlobalSetting.user_to, GlobalSetting.user_from, GlobalSetting.SERVER_PORT_USER);
-        sipUser.sendMessage(register);
+        Message register = SipMessageFactory.createRegisterRequest(sip, GlobalSetting.user_to, GlobalSetting.user_from, GlobalSetting.SERVER_PORT_USER);
+        sip.sendMessage(register, GlobalSetting.SERVER_PORT_USER);
     }
 
     public void register2(String password) {
-        Message register2 = SipMessageFactory.createRegisterRequest(sipUser, GlobalSetting.user_to, GlobalSetting.user_from,
+        Message register2 = SipMessageFactory.createRegisterRequest(sip, GlobalSetting.user_to, GlobalSetting.user_from,
                 BodyFactory.createRegisterBody(password), GlobalSetting.SERVER_PORT_USER);
-        sipUser.sendMessage(register2);
+        sip.sendMessage(register2, GlobalSetting.SERVER_PORT_USER);
     }
 
     public void checkTimeout() {
@@ -48,7 +48,7 @@ public class UserLoginManager extends BaseManager {
             public void run() {
                 if (!GlobalSetting.userLogined) {
                     if (iUserLogin != null)
-                        iUserLogin.OnLoginTimeOut();
+                        iUserLogin.OnUserLoginTimeOut();
                 }
             }
         };

@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.punuo.sys.app.Manager.DevLoginManager;
+import com.punuo.sys.app.Manager.IDevLogin;
 import com.punuo.sys.app.Manager.IUserLogin;
 import com.punuo.sys.app.Manager.UserLoginManager;
 
@@ -13,11 +15,12 @@ import com.punuo.sys.app.Manager.UserLoginManager;
  * Date 2017/7/31
  */
 
-public class Login extends BaseActivity implements View.OnClickListener, IUserLogin {
+public class Login extends BaseActivity implements View.OnClickListener, IUserLogin, IDevLogin {
 
 
     private static final String TAG = Login.class.getSimpleName();
     UserLoginManager mUserLoginManager;
+    DevLoginManager mDevLoginManager;
     Button login;
 
     @Override
@@ -36,7 +39,8 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
     }
 
     private void initManager() {
-        mUserLoginManager = new UserLoginManager(this,this);
+        mUserLoginManager = new UserLoginManager(this, this);
+        mDevLoginManager = new DevLoginManager(this, this);
     }
 
     private void init() {
@@ -72,7 +76,7 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
     }
 
     @Override
-    public void OnLogin1(String salt, String seed) {
+    public void OnUserLogin1(String salt, String seed) {
         String password = "123456";
         SHA1 sha1 = SHA1.getInstance();
         password = sha1.hashData(salt + password);
@@ -81,27 +85,66 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
     }
 
     @Override
-    public void OnLogin2() {
-        //TODO 跳转，开启心跳保活线程
+    public void OnUserLogin2() {
+        //TODO 设备注册 开启用户心跳保活线程
         Log.v(TAG, "用户注册成功");
         GlobalSetting.userLogined = true;
+        mDevLoginManager.register();
+        mDevLoginManager.checkTimeout();
     }
 
     @Override
-    public void OnLogin1Failed(int Error) {
+    public void OnUserLogin1Failed(int Error) {
         Log.e(TAG, "OnLogin1Failed: " + Error);
         GlobalSetting.userLogined = false;
     }
 
     @Override
-    public void OnLogin2Failed(int Error) {
+    public void OnUserLogin2Failed(int Error) {
         Log.e(TAG, "OnLogin2Failed: " + Error);
         GlobalSetting.userLogined = false;
     }
 
     @Override
-    public void OnLoginTimeOut() {
-        Log.e(TAG, "OnLogin2Failed: 服务器连接超时");
+    public void OnUserLoginTimeOut() {
+        Log.e(TAG, "OnUserLoginTimeOut: 服务器连接超时");
         GlobalSetting.userLogined = false;
+    }
+
+    @Override
+    public void OnDevLogin1() {
+        mDevLoginManager.register2();
+    }
+
+    @Override
+    public void OnDevLogin2() {
+        Log.v(TAG, "设备注册成功");
+        GlobalSetting.devLogined = true;
+
+    }
+
+    @Override
+    public void OnDevLogin1Failed() {
+        Log.e(TAG, "设备注册第一步失败 ");
+        GlobalSetting.devLogined = false;
+
+    }
+
+    @Override
+    public void OnDevLogin2Failed() {
+        Log.e(TAG, "设备注册第二步失败");
+        GlobalSetting.devLogined = false;
+    }
+
+    @Override
+    public void OnDevLoginTimeOut() {
+        Log.e(TAG, "OnDevLoginTimeOut：与服务器连接超时");
+        GlobalSetting.devLogined = false;
+
+    }
+
+    @Override
+    public void OnServerError() {
+        Log.e(TAG, "OnServerError 服务器的锅");
     }
 }

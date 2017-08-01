@@ -52,7 +52,7 @@ public class SipKeepAlive extends UdpKeepAlive
    /** SipProvider */
    SipProvider sip_provider;
    
-   /** SipUser token */
+   /** Sip token */
    Message sip_token=null;
 
 
