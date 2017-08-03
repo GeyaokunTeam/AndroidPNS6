@@ -78,8 +78,9 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login:
-                mUserLoginManager.register("3245073");
-                mUserLoginManager.checkTimeout();
+//                mUserLoginManager.register("3245073");
+//                mUserLoginManager.checkTimeout();
+                startActivity(new Intent(Login.this, Main.class));
                 break;
         }
     }
@@ -90,7 +91,7 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
     }
 
     public Drawable getBackground() {
-        return getResources().getDrawable(R.drawable.pn_login_bg);
+        return getResources().getDrawable(R.drawable.login_bg);
     }
 
     @Override
@@ -139,7 +140,7 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
         Log.v(TAG, "设备注册成功");
         GlobalSetting.devLogined = true;
         //TODO 跳转
-        startActivity(new Intent(Login.this, Main.class));
+//        startActivity(new Intent(Login.this, Main.class));
     }
 
     @Override

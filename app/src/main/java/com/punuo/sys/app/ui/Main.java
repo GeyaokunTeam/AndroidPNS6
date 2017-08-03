@@ -2,7 +2,13 @@ package com.punuo.sys.app.ui;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.TabHost;
 
+import com.punuo.sys.app.Constant;
+import com.punuo.sys.app.FragmentTabHost;
+import com.punuo.sys.app.Manager.NavigationTabManager;
+import com.punuo.sys.app.NavigationTabBar;
 import com.punuo.sys.app.R;
 
 /**
@@ -12,13 +18,25 @@ import com.punuo.sys.app.R;
 
 public class Main extends BaseActivity {
     private static final String TAG = Main.class.getSimpleName();
-
+    NavigationTabManager navigationTabManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         initView();
         setBackground();
+        initManager();
+    }
+
+    private void initManager() {
+        navigationTabManager= new NavigationTabManager(this,(FragmentTabHost) findViewById(android.R.id.tabhost),
+                (NavigationTabBar)findViewById(R.id.tablayout), Constant.NAVIGATION_TAB_HOME,null);
+        navigationTabManager.setTabChangeListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+                Log.i(TAG, "onTabChanged: "+ tabId);
+            }
+        });
     }
 
     private void initView() {
@@ -42,13 +60,11 @@ public class Main extends BaseActivity {
 
     @Override
     public void setBackground() {
-        Drawable drawable=getBackground();
-        rootView.setBackground(drawable);
-        drawable=null;
+
     }
 
     @Override
     public Drawable getBackground() {
-        return getResources().getDrawable(R.drawable.kk_date_vert_fragment_background);
+        return null;
     }
 }

@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">AndroidPNS6</string>
+
+    <string name="message">消息</string>
+    <string name="contact">联系人</string>
+    <string name="home">菜单</string>
+    <string name="audio">语音</string>
+    <string name="video">视频</string>
 </resources>

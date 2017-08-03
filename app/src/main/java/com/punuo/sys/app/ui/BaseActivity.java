@@ -1,8 +1,8 @@
 package com.punuo.sys.app.ui;
 
-import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 import com.punuo.sys.app.R;
@@ -13,7 +13,7 @@ import com.punuo.sys.app.i.IActivity;
  * Date 2017/7/31
  */
 
-public class BaseActivity extends Activity implements IActivity {
+public class BaseActivity extends FragmentActivity implements IActivity {
     View rootView;
 
     @Override
