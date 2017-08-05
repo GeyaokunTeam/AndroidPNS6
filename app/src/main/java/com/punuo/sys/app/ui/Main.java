@@ -2,11 +2,8 @@ package com.punuo.sys.app.ui;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.TabHost;
 
 import com.punuo.sys.app.Constant;
-import com.punuo.sys.app.FragmentTabHost;
 import com.punuo.sys.app.Manager.NavigationTabManager;
 import com.punuo.sys.app.NavigationTabBar;
 import com.punuo.sys.app.R;
@@ -28,14 +25,7 @@ public class Main extends BaseActivity {
     }
 
     private void initManager() {
-        navigationTabManager= new NavigationTabManager(this,(FragmentTabHost) findViewById(android.R.id.tabhost),
-                (NavigationTabBar)findViewById(R.id.tablayout), Constant.NAVIGATION_TAB_HOME,null);
-        navigationTabManager.setTabChangeListener(new TabHost.OnTabChangeListener() {
-            @Override
-            public void onTabChanged(String tabId) {
-                Log.i(TAG, "onTabChanged: "+ tabId);
-            }
-        });
+        navigationTabManager= new NavigationTabManager(this, (NavigationTabBar)findViewById(R.id.tablayout), Constant.NAVIGATION_TAB_HOME,null);
     }
 
     private void initView() {

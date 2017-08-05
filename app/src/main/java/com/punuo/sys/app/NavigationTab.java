@@ -92,6 +92,7 @@ public class NavigationTab extends RelativeLayout implements GestureDetector.OnD
         mGestureDetector.setOnDoubleTapListener(this);
 
     }
+
     private View.OnLongClickListener onLongClickListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
@@ -137,11 +138,10 @@ public class NavigationTab extends RelativeLayout implements GestureDetector.OnD
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
         Log.i(TAG, "onSingleTapConfirmed: ");
+        setChecked(true);
         if (oncLs != null) {
             oncLs.OnCheckedListener(NavigationTab.this, NavigationTab.this.getId());
         }
-
-
         return true;
     }
 
@@ -177,6 +177,7 @@ public class NavigationTab extends RelativeLayout implements GestureDetector.OnD
 
     public void setChecked(boolean isCheck) {
         this.isChecked = isCheck;
+        mHandler.sendEmptyMessage(REFRESH);
     }
 
     public int getCheckedIconId() {
