@@ -16,7 +16,7 @@ import com.punuo.sys.app.i.OnNavigationChangeListener;
  * Date 2017/8/3
  */
 
-public class NavigationTabManager extends BaseManager {
+public class NavigationTabManager extends BaseManager<Object> {
     private Context mContext;
     private NavigationTabBar mNavigationTabBar;
     private FragmentTabHost mTabHost;
@@ -28,6 +28,7 @@ public class NavigationTabManager extends BaseManager {
      * 未选中状态 文字颜色
      */
     private String unCheckedTextColor = "#FFFFFF";
+
     public NavigationTabManager(Context context, FragmentTabHost tabHost, NavigationTabBar navigationTabBar, String currentTab, Object iLogin) {
         super(context, iLogin);
         mContext = context;
@@ -40,8 +41,7 @@ public class NavigationTabManager extends BaseManager {
     private void addTab(String tag, CharSequence label, Class<?> cls, Bundle bundle) {
         if (mTabHost == null)
             throw new NullPointerException("TabHost is null,custom error");
-        mTabHost.addTab(mTabHost.newTabSpec(tag).setIndicator(label),
-                cls, bundle);
+        mTabHost.addTab(mTabHost.newTabSpec(tag).setIndicator(label), cls, bundle);
 
     }
 
@@ -67,18 +67,18 @@ public class NavigationTabManager extends BaseManager {
                 mContext.getString(R.string.audio),
                 mContext.getString(R.string.video)});
         mNavigationTabBar.setTextColor(checkedTextColor, unCheckedTextColor);
-
+        mNavigationTabBar.setOnNavigationChangeListener(onNavigationChangeListener);
     }
 
     private void setTabIcon() {
-        mNavigationTabBar.setIconId(Constant.NAVIGATION_TAB_MESSAGE, R.drawable.icon_home_pressed, R.drawable.icon_home_normal);
+        mNavigationTabBar.setIconId(Constant.NAVIGATION_TAB_MESSAGE, R.drawable.icon_message_pressed, R.drawable.icon_message_normal);
         mNavigationTabBar.setIconId(Constant.NAVIGATION_TAB_CONTACT, R.drawable.icon_contact_pressed, R.drawable.icon_contact_normal);
         mNavigationTabBar.setIconId(Constant.NAVIGATION_TAB_HOME, R.drawable.icon_home_pressed, R.drawable.icon_home_normal);
         mNavigationTabBar.setIconId(Constant.NAVIGATION_TAB_AUDIO, R.drawable.icon_audio_pressed, R.drawable.icon_audio_normal);
         mNavigationTabBar.setIconId(Constant.NAVIGATION_TAB_VIDEO, R.drawable.icon_video_pressed, R.drawable.icon_video_normal);
     }
 
-    private OnNavigationChangeListener onNavigationChangeListener=new OnNavigationChangeListener() {
+    private OnNavigationChangeListener onNavigationChangeListener = new OnNavigationChangeListener() {
         @Override
         public void OnChangedListener(int current) {
             if (mTabHost != null) {
@@ -90,6 +90,14 @@ public class NavigationTabManager extends BaseManager {
     public void setTabChangeListener(TabHost.OnTabChangeListener l) {
         if (l != null)
             mTabHost.setOnTabChangedListener(l);
+    }
+    public void destroy() {
+        if (mNavigationTabBar != null) {
+            mNavigationTabBar.destroy();
+            mNavigationTabBar = null;
+        }
+        mContext = null;
+
     }
     /**
      * 根据标签tag获取其index

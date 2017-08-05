@@ -42,7 +42,16 @@ public class NavigationTabBar extends RelativeLayout implements NavigationTab.On
         super(context, attrs, defStyleAttr);
         init();
     }
+    public void destroy() {
+        if (mTabList != null) {
+            mTabList.clear();
+            mTabList = null;
+        }
+    }
 
+    public void setOnNavigationChangeListener(OnNavigationChangeListener l) {
+        mNCLs = l;
+    }
     @SuppressLint("InflateParams")
     private void init() {
         View mView = LayoutInflater.from(getContext()).inflate(R.layout.navigation_tab_layout, null);

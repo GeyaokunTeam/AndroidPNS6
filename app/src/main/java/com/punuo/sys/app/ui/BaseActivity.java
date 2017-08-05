@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
-import com.punuo.sys.app.R;
 import com.punuo.sys.app.i.IActivity;
 
 /**
@@ -13,23 +12,16 @@ import com.punuo.sys.app.i.IActivity;
  * Date 2017/7/31
  */
 
-public class BaseActivity extends FragmentActivity implements IActivity {
+public abstract class BaseActivity extends FragmentActivity implements IActivity {
     View rootView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        init();
     }
 
-    private void init() {
-        setContentView(R.layout.base_layout);
-        rootView = findViewById(R.id.rootView);
-    }
 
-    public void setBackground(){
-
-    }
+    public abstract void setBackground();
 
     @Override
     protected void onDestroy() {

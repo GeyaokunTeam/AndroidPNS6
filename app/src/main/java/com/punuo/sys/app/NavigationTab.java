@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -49,6 +50,8 @@ public class NavigationTab extends RelativeLayout implements GestureDetector.OnD
 
     private boolean isChecked;
 
+    private GestureDetector mGestureDetector;
+
     public NavigationTab(Context context) {
         super(context);
         init();
@@ -76,14 +79,35 @@ public class NavigationTab extends RelativeLayout implements GestureDetector.OnD
         mCountFlag = (TextView) findViewById(R.id.count);
 
         mLabel.setTextColor(Color.parseColor(unCheckedTextColor));
-
+        setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (mGestureDetector != null && mGestureDetector.onTouchEvent(event))
+                    return true;
+                return false;
+            }
+        });
+        setOnLongClickListener(onLongClickListener);
+        mGestureDetector = new GestureDetector(getContext(), onGestureListener);
+        mGestureDetector.setOnDoubleTapListener(this);
 
     }
-
+    private View.OnLongClickListener onLongClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            return false;
+        }
+    };
+    private GestureDetector.SimpleOnGestureListener onGestureListener = new GestureDetector.SimpleOnGestureListener() {
+        @Override
+        public void onLongPress(MotionEvent e) {
+            super.onLongPress(e);
+        }
+    };
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
-            switch (msg.arg1) {
+            switch (msg.what) {
                 case REFRESH:
                     refresh();
                     break;
@@ -109,11 +133,15 @@ public class NavigationTab extends RelativeLayout implements GestureDetector.OnD
         }
     }
 
+    //NavigationTab single click event
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
+        Log.i(TAG, "onSingleTapConfirmed: ");
         if (oncLs != null) {
             oncLs.OnCheckedListener(NavigationTab.this, NavigationTab.this.getId());
         }
+
+
         return true;
     }
 
@@ -178,6 +206,7 @@ public class NavigationTab extends RelativeLayout implements GestureDetector.OnD
     public void setText(int id) {
         mHandler.obtainMessage(HANDLE_TEXT, getContext().getString(id)).sendToTarget();
     }
+
     private void handSetText(String text) {
         mLabel.setText(text);
     }

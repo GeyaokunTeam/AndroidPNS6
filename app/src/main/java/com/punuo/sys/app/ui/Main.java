@@ -24,7 +24,6 @@ public class Main extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         initView();
-        setBackground();
         initManager();
     }
 
@@ -41,11 +40,16 @@ public class Main extends BaseActivity {
 
     private void initView() {
         rootView=findViewById(R.id.rootView);
+        setBackground();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        if (navigationTabManager != null) {
+            navigationTabManager.destroy();
+        }
     }
 
     @Override
@@ -60,11 +64,11 @@ public class Main extends BaseActivity {
 
     @Override
     public void setBackground() {
-
+            rootView.setBackground(getBackground());
     }
 
     @Override
     public Drawable getBackground() {
-        return null;
+        return getResources().getDrawable(R.drawable.main_bg);
     }
 }

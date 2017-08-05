@@ -60,13 +60,11 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
     @Override
     protected void onResume() {
         super.onResume();
-        setBackground();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        rootView.setBackground(null);
     }
 
     @Override

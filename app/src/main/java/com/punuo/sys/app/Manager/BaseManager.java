@@ -1,6 +1,7 @@
 package com.punuo.sys.app.Manager;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 
 import com.punuo.sys.app.GlobalSetting;
 import com.punuo.sys.app.ThreadPool;
@@ -18,7 +19,7 @@ import java.util.Random;
 public class BaseManager<T> {
     public Sip sip;
 
-    public BaseManager(final Context context, final T iLogin) {
+    public BaseManager(final Context context, @Nullable final T iLogin) {
         ThreadPool.getInstance().addTask(new Runnable() {
             @Override
             public void run() {

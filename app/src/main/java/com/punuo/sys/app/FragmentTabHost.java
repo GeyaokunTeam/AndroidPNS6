@@ -140,7 +140,6 @@ public class FragmentTabHost extends TabHost implements TabHost.OnTabChangeListe
             }
         }
     }
-
     /**
      * @deprecated Don't call the original TabHost setup, you must instead
      * call {@link #setup(Context, FragmentManager)} or
