@@ -13,4 +13,11 @@ public class BodyFactory {
         body.append("</password>\r\n</login_request>\r\n");
         return body.toString();
     }
+
+    public static String createLogOutBody(){
+        StringBuilder body = new StringBuilder();
+        body.append("<?xml version=\"1.0\"?>\r\n" +
+                "<logout></logout>\r\n");
+        return body.toString();
+    }
 }

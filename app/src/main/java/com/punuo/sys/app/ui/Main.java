@@ -10,6 +10,7 @@ import com.punuo.sys.app.Manager.NavigationTabManager;
 import com.punuo.sys.app.NavigationTabBar;
 import com.punuo.sys.app.R;
 import com.punuo.sys.app.Type;
+import com.punuo.sys.app.Util;
 import com.punuo.sys.app.fragment.AudioFragment;
 import com.punuo.sys.app.fragment.ContactFragment;
 import com.punuo.sys.app.fragment.HomeFragment;
@@ -73,6 +74,20 @@ public class Main extends BaseActivity {
         if (navigationTabManager != null) {
             navigationTabManager.destroy();
         }
+    }
+
+    private long exitTime;
+
+    @Override
+    public void onBackPressed() {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - exitTime >= 2000) {
+            Util.showToast(this, "再按一下退出登录");
+            exitTime = currentTime;
+            return;
+        }
+        setResult(Login.LOGOUT);
+        finish();
     }
 
     @Override

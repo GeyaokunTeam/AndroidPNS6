@@ -34,13 +34,13 @@ public class GlobalSetting {
 
     public static int hostPort = -1;
     //服务器ip
-    public static String serverIp = "101.69.255.132";
+    public static String serverIp = "115.236.15.166";
     //用户账号
     public static String userAccount;
     //用户密码
     public static String passWord;
     //设备Id
-    public static String devId = "310023000100020001";
+    public static String devId = "310023000100330001";
     //sip消息From地址
     public static NameAddress user_from;
     //sip消息To地址（发给服务器）

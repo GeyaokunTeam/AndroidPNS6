@@ -14,6 +14,7 @@ import com.punuo.sys.app.Manager.UserLoginManager;
 import com.punuo.sys.app.R;
 import com.punuo.sys.app.SHA1;
 import com.punuo.sys.app.Type;
+import com.punuo.sys.app.Util;
 import com.punuo.sys.app.i.IDevLogin;
 import com.punuo.sys.app.i.IUserLogin;
 
@@ -28,6 +29,8 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
     UserLoginManager mUserLoginManager;
     DevLoginManager mDevLoginManager;
     Button login;
+    public static int LOGOUT = 0x0000;
+    public static int LOGIN = 0x0001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +46,8 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
     }
 
     private void initManager() {
-        mUserLoginManager = new UserLoginManager(this, this);
-        mDevLoginManager = new DevLoginManager(this, this);
+        mUserLoginManager = new UserLoginManager(this, this, GlobalSetting.SERVER_PORT_USER);
+        mDevLoginManager = new DevLoginManager(this, this, GlobalSetting.SERVER_PORT_DEV);
     }
 
     private void init() {
@@ -99,9 +102,8 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login:
-//                mUserLoginManager.register("3245073");
-//                mUserLoginManager.checkTimeout();
-                startActivity(new Intent(Login.this, Main.class));
+                mUserLoginManager.register("deqing10");
+                mUserLoginManager.checkTimeout();
                 break;
         }
     }
@@ -127,18 +129,21 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
     @Override
     public void OnUserLogin1Failed(int Error) {
         Log.e(TAG, "OnLogin1Failed: " + Error);
+        Util.showToast(this,"ErrorCode："+Error);
         GlobalSetting.userLogined = false;
     }
 
     @Override
     public void OnUserLogin2Failed(int Error) {
         Log.e(TAG, "OnLogin2Failed: " + Error);
+        Util.showToast(this,"账号密码错误"+Error);
         GlobalSetting.userLogined = false;
     }
 
     @Override
     public void OnUserLoginTimeOut() {
         Log.e(TAG, "OnUserLoginTimeOut: 服务器连接超时");
+        Util.showToast(this,"服务器连接超时");
         GlobalSetting.userLogined = false;
     }
 
@@ -151,19 +156,22 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
     public void OnDevLogin2() {
         Log.v(TAG, "设备注册成功");
         GlobalSetting.devLogined = true;
+        Util.showToast(this,"登录成功");
         //TODO 跳转
-//        startActivity(new Intent(Login.this, Main.class));
+        startActivityForResult(new Intent(Login.this, Main.class), LOGIN);
     }
 
     @Override
     public void OnDevLoginFailed() {
         Log.e(TAG, "设备注册失败");
+        Util.showToast(this,"设备注册失败");
         GlobalSetting.devLogined = false;
     }
 
     @Override
     public void OnDevLoginTimeOut() {
-        Log.e(TAG, "OnDevLoginTimeOut：与服务器连接超时");
+        Log.e(TAG, "OnDevLoginTimeOut：服务器连接超时");
+        Util.showToast(this,"服务器连接超时");
         GlobalSetting.devLogined = false;
 
     }
@@ -171,5 +179,18 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
     @Override
     public void OnServerError() {
         Log.e(TAG, "OnServerError 服务器的锅");
+        Util.showToast(this,"服务器异常");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == LOGIN) {
+            if (resultCode == LOGOUT) {
+                mUserLoginManager.logout();
+                mDevLoginManager.logout();
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }

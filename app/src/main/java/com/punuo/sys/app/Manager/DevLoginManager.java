@@ -22,22 +22,32 @@ import java.util.TimerTask;
 public class DevLoginManager extends BaseManager<IDevLogin> {
 
     private IDevLogin iDevLogin;
+    private int port;
 
-    public DevLoginManager(Context context, IDevLogin iDevLogin) {
+    public DevLoginManager(Context context, IDevLogin iDevLogin, int port) {
         super(context, iDevLogin);
-        this.iDevLogin=iDevLogin;
+        this.iDevLogin = iDevLogin;
+        this.port = port;
     }
+
     public void register() {
         GlobalSetting.devLogined = false;
-        SipURL local = new SipURL(GlobalSetting.devId, GlobalSetting.serverIp, GlobalSetting.SERVER_PORT_DEV);
+        SipURL local = new SipURL(GlobalSetting.devId, GlobalSetting.serverIp, port);
         GlobalSetting.dev_from = new NameAddress("PNDT20", local);
-        Message register = SipMessageFactory.createRegisterRequest(sip, GlobalSetting.dev_to, GlobalSetting.dev_from, GlobalSetting.SERVER_PORT_DEV);
-        sip.sendMessage(register, GlobalSetting.SERVER_PORT_DEV);
+        Message register = SipMessageFactory.createRegisterRequest(sip, GlobalSetting.dev_to, GlobalSetting.dev_from, port);
+        sip.sendMessage(register, port);
     }
+
     public void register2() {
         Message register2 = SipMessageFactory.createRegisterRequest(sip, GlobalSetting.dev_to, GlobalSetting.dev_from,
-                BodyFactory.createRegisterBody("123456"), GlobalSetting.SERVER_PORT_DEV);
-        sip.sendMessage(register2, GlobalSetting.SERVER_PORT_DEV);
+                BodyFactory.createRegisterBody("123456"), port);
+        sip.sendMessage(register2, port);
+    }
+
+    public void logout() {
+        Message logout = SipMessageFactory.createNotifyRequest(sip, GlobalSetting.dev_to, GlobalSetting.dev_from,
+                BodyFactory.createLogOutBody(), port);
+        sip.sendMessage(logout, port);
     }
 
     public void checkTimeout() {
