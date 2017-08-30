@@ -1,8 +1,8 @@
 package com.punuo.sys.app.ui;
 
-import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
@@ -15,7 +15,7 @@ import com.punuo.sys.app.i.IActivity;
  * Date 2017/7/31
  */
 
-public abstract class BaseActivity extends Activity implements IActivity {
+public abstract class BaseActivity extends AppCompatActivity implements IActivity {
     View mView;
 
     @Override

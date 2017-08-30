@@ -163,7 +163,7 @@ public class NavigationTab extends RelativeLayout implements GestureDetector.OnD
         this.oncLs = oncLs;
     }
 
-    public String getTagTag() {
+    public String getTabTag() {
         return mTag;
     }
 
@@ -178,7 +178,6 @@ public class NavigationTab extends RelativeLayout implements GestureDetector.OnD
     public void setChecked(boolean isCheck) {
         this.isChecked = isCheck;
         mHandler.sendEmptyMessage(REFRESH);
-
     }
 
     public int getCheckedIconId() {

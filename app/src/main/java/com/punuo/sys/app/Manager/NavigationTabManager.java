@@ -5,6 +5,8 @@ import android.content.Context;
 import com.punuo.sys.app.Constant;
 import com.punuo.sys.app.NavigationTabBar;
 import com.punuo.sys.app.R;
+import com.punuo.sys.app.i.IFragmentListener;
+import com.punuo.sys.app.i.OnNavigationChangeListener;
 
 /**
  * Author chenhan
@@ -14,6 +16,7 @@ import com.punuo.sys.app.R;
 public class NavigationTabManager extends BaseManager {
     private Context mContext;
     private NavigationTabBar mNavigationTabBar;
+    private IFragmentListener listener;
     /**
      * 选中状态 文字颜色
      */
@@ -23,12 +26,13 @@ public class NavigationTabManager extends BaseManager {
      */
     private String unCheckedTextColor = "#FFFFFF";
 
-    public NavigationTabManager(Context context, NavigationTabBar navigationTabBar, String currentTab, Object i) {
+    public NavigationTabManager(Context context, NavigationTabBar navigationTabBar, String currentTab, Object i, IFragmentListener listener) {
         super(context, i);
         mContext = context;
         mNavigationTabBar = navigationTabBar;
         initTab();
         setCurrentTab(currentTab);
+        this.listener=listener;
     }
 
     private void initTab() {
@@ -40,6 +44,7 @@ public class NavigationTabManager extends BaseManager {
                 mContext.getString(R.string.audio),
                 mContext.getString(R.string.video)});
         mNavigationTabBar.setTextColor(checkedTextColor, unCheckedTextColor);
+        mNavigationTabBar.setOnNavigationChangeListener(mOnNavigationChangeListener);
     }
 
     private void setTabIcon() {
@@ -73,4 +78,13 @@ public class NavigationTabManager extends BaseManager {
                 mNavigationTabBar.switchTabUI(tag);
         }
     }
+
+    OnNavigationChangeListener mOnNavigationChangeListener = new OnNavigationChangeListener() {
+        @Override
+        public void OnChangedListener(String tabTag) {
+            if (listener!=null){
+                listener.showFragment(tabTag);
+            }
+        }
+    };
 }

@@ -6,5 +6,5 @@ package com.punuo.sys.app.i;
  */
 
 public interface OnNavigationChangeListener {
-    void OnChangedListener(int current);
+    void OnChangedListener(String tabTag);
 }

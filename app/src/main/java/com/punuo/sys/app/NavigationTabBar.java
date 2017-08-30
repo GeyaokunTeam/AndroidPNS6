@@ -96,7 +96,7 @@ public class NavigationTabBar extends RelativeLayout implements NavigationTab.On
                 //如果是被check的tab
                 if (id == child.getId())
                     if (mNCLs != null) {
-                        mNCLs.OnChangedListener(i);
+                        mNCLs.OnChangedListener(child.getTabTag());
                     }
                 child.setChecked(false);
             }
@@ -124,7 +124,7 @@ public class NavigationTabBar extends RelativeLayout implements NavigationTab.On
         if (mTabList == null)
             return -1;
         for (int i = 0; i < mTabList.size(); i++) {
-            if (mTabList.get(i).getTagTag().equals(tag)) {
+            if (mTabList.get(i).getTabTag().equals(tag)) {
                 return i;
             }
         }
@@ -137,7 +137,7 @@ public class NavigationTabBar extends RelativeLayout implements NavigationTab.On
             View linear = ((LinearLayout) getChildAt(0)).getChildAt(i);
             if (linear != null && linear instanceof NavigationTab) {
                 NavigationTab child = (NavigationTab) linear;
-                if (child.getTagTag().equals(tag)) {
+                if (child.getTabTag().equals(tag)) {
                     child.setChecked(true);
                 } else {
                     child.setChecked(false);
