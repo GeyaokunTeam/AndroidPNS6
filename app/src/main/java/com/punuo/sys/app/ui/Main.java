@@ -7,6 +7,7 @@ import com.punuo.sys.app.Constant;
 import com.punuo.sys.app.Manager.NavigationTabManager;
 import com.punuo.sys.app.NavigationTabBar;
 import com.punuo.sys.app.R;
+import com.punuo.sys.app.Type;
 
 /**
  * Author chenhan
@@ -16,27 +17,24 @@ import com.punuo.sys.app.R;
 public class Main extends BaseActivity {
     private static final String TAG = Main.class.getSimpleName();
     NavigationTabManager navigationTabManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
         initView();
         initManager();
     }
 
     private void initManager() {
-        navigationTabManager= new NavigationTabManager(this, (NavigationTabBar)findViewById(R.id.tablayout), Constant.NAVIGATION_TAB_HOME,null);
+        navigationTabManager = new NavigationTabManager(this, (NavigationTabBar) findViewById(R.id.tablayout), Constant.NAVIGATION_TAB_HOME, null);
     }
 
     private void initView() {
-        rootView=findViewById(R.id.rootView);
-        setBackground();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         if (navigationTabManager != null) {
             navigationTabManager.destroy();
         }
@@ -53,12 +51,27 @@ public class Main extends BaseActivity {
     }
 
     @Override
-    public void setBackground() {
-            rootView.setBackground(getBackground());
+    protected void setContentView() {
+        setContentView(getLayoutId());
     }
 
     @Override
-    public Drawable getBackground() {
-        return getResources().getDrawable(R.drawable.main_bg);
+    protected int getLayoutId() {
+        return R.layout.main;
+    }
+
+    @Override
+    protected void setBackground() {
+        mView.setBackground(getBackgroundDrawable());
+    }
+
+    @Override
+    protected Drawable getBackgroundDrawable() {
+        return getDrawable(R.drawable.main_bg);
+    }
+
+    @Override
+    protected String getActivityType() {
+        return Type.CH_MAIN;
     }
 }

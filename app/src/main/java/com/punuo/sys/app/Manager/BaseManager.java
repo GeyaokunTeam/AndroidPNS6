@@ -1,12 +1,15 @@
 package com.punuo.sys.app.Manager;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 
 import com.punuo.sys.app.GlobalSetting;
 import com.punuo.sys.app.ThreadPool;
 import com.punuo.sys.app.i.IDevLogin;
 import com.punuo.sys.app.i.IUserLogin;
+import com.punuo.sys.app.i.IManager;
 import com.punuo.sys.app.sip.Sip;
 
 import java.util.Random;
@@ -16,10 +19,12 @@ import java.util.Random;
  * Date 2016/12/19.
  */
 
-public class BaseManager<T> {
+public class BaseManager<T> implements IManager {
     public Sip sip;
-
+    protected Handler mHandler;
     public BaseManager(final Context context, @Nullable final T iLogin) {
+        mHandler = new Handler(Looper.getMainLooper());
+        addParent();
         ThreadPool.getInstance().addTask(new Runnable() {
             @Override
             public void run() {
@@ -36,6 +41,15 @@ public class BaseManager<T> {
                 }
             }
         });
+    }
 
+    @Override
+    public void addParent() {
+        ManagerFather.getInstance().addManager(this);
+    }
+
+    @Override
+    public void destroy() {
+        mHandler.removeCallbacksAndMessages(null);
     }
 }

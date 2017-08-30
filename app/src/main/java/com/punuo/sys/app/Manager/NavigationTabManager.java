@@ -11,7 +11,7 @@ import com.punuo.sys.app.R;
  * Date 2017/8/3
  */
 
-public class NavigationTabManager extends BaseManager<Object> {
+public class NavigationTabManager extends BaseManager {
     private Context mContext;
     private NavigationTabBar mNavigationTabBar;
     /**
@@ -23,8 +23,8 @@ public class NavigationTabManager extends BaseManager<Object> {
      */
     private String unCheckedTextColor = "#FFFFFF";
 
-    public NavigationTabManager(Context context, NavigationTabBar navigationTabBar, String currentTab, Object iLogin) {
-        super(context, iLogin);
+    public NavigationTabManager(Context context, NavigationTabBar navigationTabBar, String currentTab, Object i) {
+        super(context, i);
         mContext = context;
         mNavigationTabBar = navigationTabBar;
         initTab();

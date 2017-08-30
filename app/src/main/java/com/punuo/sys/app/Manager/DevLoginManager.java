@@ -53,4 +53,9 @@ public class DevLoginManager extends BaseManager<IDevLogin> {
         };
         timer.schedule(checkTimeout, 5000);
     }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+    }
 }

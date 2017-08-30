@@ -13,6 +13,7 @@ import com.punuo.sys.app.Manager.DevLoginManager;
 import com.punuo.sys.app.Manager.UserLoginManager;
 import com.punuo.sys.app.R;
 import com.punuo.sys.app.SHA1;
+import com.punuo.sys.app.Type;
 import com.punuo.sys.app.i.IDevLogin;
 import com.punuo.sys.app.i.IUserLogin;
 
@@ -23,7 +24,6 @@ import com.punuo.sys.app.i.IUserLogin;
 
 public class Login extends BaseActivity implements View.OnClickListener, IUserLogin, IDevLogin {
 
-
     private static final String TAG = Login.class.getSimpleName();
     UserLoginManager mUserLoginManager;
     DevLoginManager mDevLoginManager;
@@ -32,16 +32,13 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
         init();
         initManager();
         initView();
-        setBackground();
     }
 
     private void initView() {
         login = (Button) findViewById(R.id.login);
-        rootView = findViewById(R.id.rootView);
         login.setOnClickListener(this);
     }
 
@@ -68,8 +65,34 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
     }
 
     @Override
+    protected void setContentView() {
+        setContentView(getLayoutId());
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.login;
+    }
+
+    @Override
+    protected void setBackground() {
+        mView.setBackground(getBackgroundDrawable());
+    }
+
+    @Override
+    protected Drawable getBackgroundDrawable() {
+        return getDrawable(R.drawable.login_bg);
+    }
+
+    @Override
+    protected String getActivityType() {
+        return Type.CH_LOGIN;
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
+
     }
 
     @Override
@@ -81,15 +104,6 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
                 startActivity(new Intent(Login.this, Main.class));
                 break;
         }
-    }
-
-    @Override
-    public void setBackground() {
-        rootView.setBackground(getBackground());
-    }
-
-    public Drawable getBackground() {
-        return getResources().getDrawable(R.drawable.login_bg);
     }
 
     @Override

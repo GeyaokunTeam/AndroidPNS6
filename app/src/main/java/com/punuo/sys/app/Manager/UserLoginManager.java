@@ -19,7 +19,7 @@ import java.util.TimerTask;
  * Date 2017/7/31
  */
 
-public class UserLoginManager extends BaseManager<IUserLogin> {
+public class UserLoginManager extends BaseManager<IUserLogin>  {
 
     private IUserLogin iUserLogin;
 
@@ -54,5 +54,10 @@ public class UserLoginManager extends BaseManager<IUserLogin> {
             }
         };
         timer.schedule(checkTimeout, 5000);
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
     }
 }
