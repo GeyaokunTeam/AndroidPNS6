@@ -16,16 +16,4 @@
         android:layout_alignParentBottom="true"
         android:gravity="center_vertical"
         android:orientation="horizontal" />
-
-    <com.punuo.sys.app.FragmentTabHost
-        android:id="@android:id/tabhost"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
-        <FrameLayout
-            android:id="@android:id/tabcontent"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-    </com.punuo.sys.app.FragmentTabHost>
 </RelativeLayout>
