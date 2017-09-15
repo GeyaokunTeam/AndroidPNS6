@@ -17,7 +17,7 @@
         android:paddingStart="25dp">
 
         <EditText
-            android:id="@+id/username"
+            android:id="@+id/user_account"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"

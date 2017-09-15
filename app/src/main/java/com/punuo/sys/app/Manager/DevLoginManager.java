@@ -1,6 +1,7 @@
 package com.punuo.sys.app.Manager;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.punuo.sys.app.GlobalSetting;
 import com.punuo.sys.app.i.IDevLogin;
@@ -20,7 +21,7 @@ import java.util.TimerTask;
  */
 
 public class DevLoginManager extends BaseManager<IDevLogin> {
-
+    private String TAG = DevLoginManager.class.getSimpleName();
     private IDevLogin iDevLogin;
     private int port;
 
@@ -67,5 +68,6 @@ public class DevLoginManager extends BaseManager<IDevLogin> {
     @Override
     public void destroy() {
         super.destroy();
+        Log.d(TAG, "DevLoginManager destroy");
     }
 }

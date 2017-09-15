@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.punuo.sys.app.BaseApp;
 import com.punuo.sys.app.GlobalSetting;
@@ -29,6 +31,8 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
     UserLoginManager mUserLoginManager;
     DevLoginManager mDevLoginManager;
     Button login;
+    EditText mUserAccountView;
+    EditText mPasswordView;
     public static int LOGOUT = 0x0000;
     public static int LOGIN = 0x0001;
 
@@ -42,7 +46,17 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
 
     private void initView() {
         login = (Button) findViewById(R.id.login);
+        mUserAccountView = (EditText) findViewById(R.id.user_account);
+        mPasswordView = (EditText) findViewById(R.id.password);
         login.setOnClickListener(this);
+        Util.addLayoutListener(mView, login);
+        mView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Util.hideKeyboard(v.getWindowToken());
+                return true;
+            }
+        });
     }
 
     private void initManager() {
@@ -102,15 +116,22 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login:
-                mUserLoginManager.register("deqing10");
-                mUserLoginManager.checkTimeout();
+                login();
                 break;
         }
     }
 
+    private void login() {
+        String userAccount = mUserAccountView.getText().toString().trim();
+        GlobalSetting.user.userAccount = userAccount;
+        mUserLoginManager.register(userAccount);
+        mUserLoginManager.checkTimeout();
+    }
+
     @Override
     public void OnUserLogin1(String salt, String seed) {
-        String password = "123456";
+        String password = mPasswordView.getText().toString();
+        GlobalSetting.user.password = password;
         SHA1 sha1 = SHA1.getInstance();
         password = sha1.hashData(salt + password);
         password = sha1.hashData(seed + password);
@@ -129,21 +150,21 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
     @Override
     public void OnUserLogin1Failed(int Error) {
         Log.e(TAG, "OnLogin1Failed: " + Error);
-        Util.showToast(this,"ErrorCode："+Error);
+        Util.showToast(this, "ErrorCode：" + Error);
         GlobalSetting.userLogined = false;
     }
 
     @Override
     public void OnUserLogin2Failed(int Error) {
         Log.e(TAG, "OnLogin2Failed: " + Error);
-        Util.showToast(this,"账号密码错误"+Error);
+        Util.showToast(this, "账号密码错误" + Error);
         GlobalSetting.userLogined = false;
     }
 
     @Override
     public void OnUserLoginTimeOut() {
         Log.e(TAG, "OnUserLoginTimeOut: 服务器连接超时");
-        Util.showToast(this,"服务器连接超时");
+        Util.showToast(this, "服务器连接超时");
         GlobalSetting.userLogined = false;
     }
 
@@ -156,7 +177,7 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
     public void OnDevLogin2() {
         Log.v(TAG, "设备注册成功");
         GlobalSetting.devLogined = true;
-        Util.showToast(this,"登录成功");
+        Util.showToast(this, "登录成功");
         //TODO 跳转
         startActivityForResult(new Intent(Login.this, Main.class), LOGIN);
     }
@@ -164,14 +185,14 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
     @Override
     public void OnDevLoginFailed() {
         Log.e(TAG, "设备注册失败");
-        Util.showToast(this,"设备注册失败");
+        Util.showToast(this, "设备注册失败");
         GlobalSetting.devLogined = false;
     }
 
     @Override
     public void OnDevLoginTimeOut() {
         Log.e(TAG, "OnDevLoginTimeOut：服务器连接超时");
-        Util.showToast(this,"服务器连接超时");
+        Util.showToast(this, "服务器连接超时");
         GlobalSetting.devLogined = false;
 
     }
@@ -179,7 +200,7 @@ public class Login extends BaseActivity implements View.OnClickListener, IUserLo
     @Override
     public void OnServerError() {
         Log.e(TAG, "OnServerError 服务器的锅");
-        Util.showToast(this,"服务器异常");
+        Util.showToast(this, "服务器异常");
     }
 
     @Override

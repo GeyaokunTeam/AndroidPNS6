@@ -1,6 +1,7 @@
 package com.punuo.sys.app.Manager;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.punuo.sys.app.GlobalSetting;
 import com.punuo.sys.app.i.IUserLogin;
@@ -20,7 +21,7 @@ import java.util.TimerTask;
  */
 
 public class UserLoginManager extends BaseManager<IUserLogin> {
-
+    private String TAG=UserLoginManager.class.getSimpleName();
     private IUserLogin iUserLogin;
     private int port;
 
@@ -67,5 +68,6 @@ public class UserLoginManager extends BaseManager<IUserLogin> {
     @Override
     public void destroy() {
         super.destroy();
+        Log.d(TAG, "UserLoginManager destroy");
     }
 }

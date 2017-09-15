@@ -3,6 +3,8 @@ package com.punuo.sys.app;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.punuo.sys.app.struct.MySelf;
+
 import org.zoolu.sip.address.NameAddress;
 import org.zoolu.sip.address.SipURL;
 
@@ -28,7 +30,7 @@ public class GlobalSetting {
     //用户注册获取用户ID使用
     public static final String REGISTER_ID = "330100000010000190";
     //用户Id
-    public static UserProfile user;
+    public static MySelf user;
 
     public boolean debug = false;
 

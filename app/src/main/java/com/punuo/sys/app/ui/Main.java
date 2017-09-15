@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.punuo.sys.app.Constant;
+import com.punuo.sys.app.GlobalSetting;
 import com.punuo.sys.app.Manager.NavigationTabManager;
 import com.punuo.sys.app.NavigationTabBar;
 import com.punuo.sys.app.R;
@@ -17,6 +18,7 @@ import com.punuo.sys.app.fragment.HomeFragment;
 import com.punuo.sys.app.fragment.MessageFragment;
 import com.punuo.sys.app.fragment.VideoFragment;
 import com.punuo.sys.app.i.IFragmentListener;
+import com.punuo.sys.app.sip.Sip;
 
 /**
  * Author chenhan
@@ -24,7 +26,7 @@ import com.punuo.sys.app.i.IFragmentListener;
  */
 
 public class Main extends BaseActivity {
-    private static final String TAG = Main.class.getSimpleName();
+    private String TAG = Main.class.getSimpleName();
     NavigationTabManager navigationTabManager;
     private FragmentManager fm;
     private FragmentTransaction ft;
@@ -74,6 +76,7 @@ public class Main extends BaseActivity {
         if (navigationTabManager != null) {
             navigationTabManager.destroy();
         }
+        Sip.getInstance(null, GlobalSetting.hostPort,Main.this).shutDown();
     }
 
     private long exitTime;

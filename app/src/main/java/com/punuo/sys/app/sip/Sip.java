@@ -4,10 +4,10 @@ import android.content.Context;
 import android.util.Log;
 
 import com.punuo.sys.app.GlobalSetting;
+import com.punuo.sys.app.Status;
 import com.punuo.sys.app.i.IDevLogin;
 import com.punuo.sys.app.i.IUserLogin;
-import com.punuo.sys.app.Status;
-import com.punuo.sys.app.UserProfile;
+import com.punuo.sys.app.struct.MySelf;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -26,8 +26,6 @@ import java.util.concurrent.Executors;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
-import static com.punuo.sys.app.GlobalSetting.user;
 
 /**
  * Author chenhan
@@ -93,7 +91,7 @@ public class Sip extends SipProvider {
     public synchronized void onReceivedMessage(Transport transport, Message msg) {
         Log.v(TAG, "<----------receive sip message---------->");
         Log.v(TAG, msg.toString());
-        //sip消息来源的RemoteProt,6060为设备,6061为用户
+        //sip消息来源的RemotePort,6060为设备,6061为用户
         int port = msg.getRemotePort();
         if (port == GlobalSetting.SERVER_PORT_USER) {
             if (msg.isRequest()) {
@@ -163,7 +161,7 @@ public class Sip extends SipProvider {
                             Element saltElement = (Element) root.getElementsByTagName("salt").item(0);
                             Element phoneNumElement = (Element) root.getElementsByTagName("phone_num").item(0);
                             Element realNameElement = (Element) root.getElementsByTagName("real_name").item(0);
-                            GlobalSetting.user = new UserProfile();
+                            GlobalSetting.user = new MySelf();
                             String seed;
                             String salt;
                             GlobalSetting.user.userId = userIdElement.getFirstChild().getNodeValue();

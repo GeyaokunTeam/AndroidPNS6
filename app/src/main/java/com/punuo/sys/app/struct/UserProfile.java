@@ -1,4 +1,4 @@
-package com.punuo.sys.app;
+package com.punuo.sys.app.struct;
 
 /**
  * Author chenhan

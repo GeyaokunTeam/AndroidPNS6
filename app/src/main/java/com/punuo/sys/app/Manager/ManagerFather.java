@@ -45,5 +45,4 @@ public class ManagerFather {
         }
         managerMap.remove(group);
     }
-
 }
