@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.punuo.sys.app.Constant;
-import com.punuo.sys.app.GlobalSetting;
 import com.punuo.sys.app.Manager.NavigationTabManager;
 import com.punuo.sys.app.NavigationTabBar;
 import com.punuo.sys.app.R;
@@ -18,7 +17,6 @@ import com.punuo.sys.app.fragment.HomeFragment;
 import com.punuo.sys.app.fragment.MessageFragment;
 import com.punuo.sys.app.fragment.VideoFragment;
 import com.punuo.sys.app.i.IFragmentListener;
-import com.punuo.sys.app.sip.Sip;
 
 /**
  * Author chenhan
@@ -63,7 +61,7 @@ public class Main extends BaseActivity {
     }
 
     private void initManager() {
-        navigationTabManager = new NavigationTabManager(this, (NavigationTabBar) findViewById(R.id.tablayout), Constant.NAVIGATION_TAB_HOME, null, newFragmentListener());
+        navigationTabManager = new NavigationTabManager(this, (NavigationTabBar) findViewById(R.id.tablayout), Constant.NAVIGATION_TAB_HOME, newFragmentListener());
     }
 
     private void initView() {
@@ -76,7 +74,6 @@ public class Main extends BaseActivity {
         if (navigationTabManager != null) {
             navigationTabManager.destroy();
         }
-        Sip.getInstance(null, GlobalSetting.hostPort,Main.this).shutDown();
     }
 
     private long exitTime;

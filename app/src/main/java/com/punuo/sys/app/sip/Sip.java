@@ -4,10 +4,10 @@ import android.content.Context;
 import android.util.Log;
 
 import com.punuo.sys.app.GlobalSetting;
+import com.punuo.sys.app.MustCallException;
 import com.punuo.sys.app.Status;
 import com.punuo.sys.app.i.IDevLogin;
 import com.punuo.sys.app.i.IUserLogin;
-import com.punuo.sys.app.struct.MySelf;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -43,18 +43,32 @@ public class Sip extends SipProvider {
 
     private static Sip instance;
 
-    public static Sip getInstance(String via_addr, int host_port, Context context) {
+    public static void init(String via_addr, int host_port, Context context) {
         if (instance == null) {
             instance = new Sip(via_addr, host_port, context);
         }
+    }
+
+    public static Sip getInstance() {
+        if (instance == null) {
+            throw new MustCallException("init()" + Sip.class);
+        }
         return instance;
+    }
+
+    public static void destroy() {
+        if (instance != null) {
+            instance.halt();
+            instance.shutDown();
+            instance = null;
+        }
     }
 
     public void setIUserLogin(IUserLogin mIUserLogin) {
         this.mIUserLogin = mIUserLogin;
     }
 
-    public void setiDevLogin(IDevLogin iDevLogin) {
+    public void setIDevLogin(IDevLogin iDevLogin) {
         this.iDevLogin = iDevLogin;
     }
 
@@ -161,7 +175,6 @@ public class Sip extends SipProvider {
                             Element saltElement = (Element) root.getElementsByTagName("salt").item(0);
                             Element phoneNumElement = (Element) root.getElementsByTagName("phone_num").item(0);
                             Element realNameElement = (Element) root.getElementsByTagName("real_name").item(0);
-                            GlobalSetting.user = new MySelf();
                             String seed;
                             String salt;
                             GlobalSetting.user.userId = userIdElement.getFirstChild().getNodeValue();

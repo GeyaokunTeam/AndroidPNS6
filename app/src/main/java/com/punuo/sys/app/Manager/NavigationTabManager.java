@@ -26,8 +26,8 @@ public class NavigationTabManager extends BaseManager {
      */
     private String unCheckedTextColor = "#FFFFFF";
 
-    public NavigationTabManager(Context context, NavigationTabBar navigationTabBar, String currentTab, Object i, IFragmentListener listener) {
-        super(context, i);
+    public NavigationTabManager(Context context, NavigationTabBar navigationTabBar, String currentTab, IFragmentListener listener) {
+        super();
         mContext = context;
         mNavigationTabBar = navigationTabBar;
         initTab();

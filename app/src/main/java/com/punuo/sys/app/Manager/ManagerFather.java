@@ -39,6 +39,7 @@ public class ManagerFather {
 
     public void destroy(String group) {
         List<IManager> managerList = managerMap.get(group);
+        if (managerList == null) return;
         for (int i = 0; i < managerList.size(); i++) {
             IManager iManager = managerList.get(i);
             iManager.destroy();

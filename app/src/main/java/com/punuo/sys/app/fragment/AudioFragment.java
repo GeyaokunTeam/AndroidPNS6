@@ -18,4 +18,9 @@ public class AudioFragment extends BaseFragment {
     public String getFragmentType() {
         return Type.AUDIOFRAGMENT;
     }
+
+    @Override
+    protected void initManager() {
+
+    }
 }

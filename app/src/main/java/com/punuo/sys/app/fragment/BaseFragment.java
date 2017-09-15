@@ -16,7 +16,7 @@ import com.punuo.sys.app.Manager.ManagerFather;
  */
 
 public abstract class BaseFragment extends Fragment {
-    private View mView;
+    protected View mView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -32,7 +32,8 @@ public abstract class BaseFragment extends Fragment {
 
     public abstract String getFragmentType();
 
-    private HomeManager mHomeManager;
+    protected HomeManager mHomeManager;
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -40,13 +41,11 @@ public abstract class BaseFragment extends Fragment {
         init();
     }
 
-    private void init() {
+    protected void init() {
         initManager();
     }
 
-    private void initManager() {
-        mHomeManager=new HomeManager(getActivity(),null);
-    }
+    protected abstract void initManager();
 
     @Override
     public void onResume() {

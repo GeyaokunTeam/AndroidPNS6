@@ -36,7 +36,6 @@ public class Util {
                 Rect rect = new Rect();
                 view.getWindowVisibleDisplayFrame(rect);//rect为输出参数,因此rect不允许为null
                 int mainInvisibleHeight = view.getRootView().getHeight() - rect.bottom;
-                System.out.println(scroll.getBottom());
                 if (mainInvisibleHeight > 100) {
                     int[] location = new int[2];
                     scroll.getLocationOnScreen(location);//输入参数必须是一个长度为2的int数组
