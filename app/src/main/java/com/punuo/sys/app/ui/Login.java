@@ -16,15 +16,11 @@ import com.punuo.sys.app.Manager.DevLoginManager;
 import com.punuo.sys.app.Manager.UserLoginManager;
 import com.punuo.sys.app.R;
 import com.punuo.sys.app.SHA1;
-import com.punuo.sys.app.ThreadPool;
 import com.punuo.sys.app.Type;
 import com.punuo.sys.app.Util;
 import com.punuo.sys.app.i.IDevLogin;
 import com.punuo.sys.app.i.IUserLogin;
 import com.punuo.sys.app.sip.Sip;
-import com.punuo.sys.app.struct.MySelf;
-
-import java.util.Random;
 
 /**
  * Author chenhan
@@ -129,23 +125,24 @@ public class Login extends BaseActivity implements View.OnClickListener {
     }
 
     private void login() {
-        ThreadPool.getInstance().addTask(new Runnable() {
-            @Override
-            public void run() {
-                int hostPort = new Random().nextInt(5000) + 2000;
-                GlobalSetting.hostPort = hostPort;
-                Sip.init(null, hostPort, Login.this);
-                Sip.getInstance().setIDevLogin(initIDevLogin());
-                Sip.getInstance().setIUserLogin(initIUserLogin());
-                GlobalSetting.user = new MySelf();
-                String userAccount = mUserAccountView.getText().toString().trim();
-                GlobalSetting.user.userAccount = userAccount;
-                mUserLoginManager.register(userAccount);
-                mUserLoginManager.checkTimeout();
-            }
-        });
-        Util.hideKeyboard(mView.getWindowToken());
-        showProgressDialog();
+        startActivityForResult(new Intent(Login.this, Main.class), LOGIN);
+//        ThreadPool.getInstance().addTask(new Runnable() {
+//            @Override
+//            public void run() {
+//                int hostPort = new Random().nextInt(5000) + 2000;
+//                GlobalSetting.hostPort = hostPort;
+//                Sip.init(null, hostPort, Login.this);
+//                Sip.getInstance().setIDevLogin(initIDevLogin());
+//                Sip.getInstance().setIUserLogin(initIUserLogin());
+//                GlobalSetting.user = new MySelf();
+//                String userAccount = mUserAccountView.getText().toString().trim();
+//                GlobalSetting.user.userAccount = userAccount;
+//                mUserLoginManager.register(userAccount);
+//                mUserLoginManager.checkTimeout();
+//            }
+//        });
+//        Util.hideKeyboard(mView.getWindowToken());
+//        showProgressDialog();
     }
 
     private IUserLogin initIUserLogin() {

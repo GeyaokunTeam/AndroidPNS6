@@ -51,7 +51,7 @@ public class HomeManager extends BaseManager {
             "我的相册",
             "集群呼叫",
             "软件更新",
-            "添加应用"
+            "应用商城"
     };
     int screenCount;
     public final int NUMBER_PER_SCREEN = 16;
@@ -92,9 +92,11 @@ public class HomeManager extends BaseManager {
         AppReceiver = new ApplicationsIntentReceiver();
         mContext.registerReceiver(AppReceiver, filter);
     }
+
     private void unregisterIntentReceivers() {
         mContext.unregisterReceiver(AppReceiver);
     }
+
     private class ApplicationsIntentReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -132,7 +134,9 @@ public class HomeManager extends BaseManager {
 
             if (info.loadLabel(manager).equals("设置") || info.loadLabel(manager).equals("文件管理")
                     || (info.activityInfo.applicationInfo.packageName.contains("com.punuo.sys.app")
-                    && !info.activityInfo.applicationInfo.packageName.contains("com.punuo.sys.app.xungeng"))) {
+                    && !info.activityInfo.applicationInfo.packageName.contains("com.punuo.sys.app.ch"))
+                    && !info.activityInfo.applicationInfo.packageName.contains("com.punuo.sys.app.main")
+                    && !info.activityInfo.applicationInfo.packageName.contains("com.punuo.sys.app.xungeng")) {
                 application.setType(MyApplicationInfo.TYPE_APP);
                 application.setTitle(info.loadLabel(manager));
                 application.packageName = info.activityInfo.applicationInfo.packageName;
@@ -157,7 +161,7 @@ public class HomeManager extends BaseManager {
         }
         MyApplicationInfo applicationInfo = new MyApplicationInfo();
         applicationInfo.setType(MyApplicationInfo.TYPE_BUTTON);
-        applicationInfo.setTitle("添加应用");
+        applicationInfo.setTitle("应用商城");
         applicationInfo.setIcon(mContext.getDrawable(R.drawable.home_add));
         applicationInfo.setSystemApp(false);
         mApplications.add(applicationInfo);

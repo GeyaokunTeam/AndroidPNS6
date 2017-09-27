@@ -4,13 +4,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="82.5dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/login_icon" />
+
+
+    <ImageView
+        android:layout_width="323.5dp"
+        android:layout_height="232.5dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="150dp"
+        android:src="@drawable/login_pic" />
+
+    <TextView
+        android:id="@+id/app_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="110dp"
+        android:gravity="center"
+        android:text="应急指挥调度软件"
+        android:textColor="@color/ch_ffffff"
+        android:textSize="30sp" />
+
     <LinearLayout
         android:id="@+id/input"
         android:layout_width="match_parent"
         android:layout_height="110dp"
         android:layout_marginEnd="25dp"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="350dp"
         android:background="@drawable/login_input_background"
         android:orientation="vertical"
         android:paddingEnd="25dp"
