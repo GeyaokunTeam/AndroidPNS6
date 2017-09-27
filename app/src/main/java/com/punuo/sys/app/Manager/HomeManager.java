@@ -53,7 +53,6 @@ public class HomeManager extends BaseManager {
             "软件更新",
             "应用商城"
     };
-
     int screenCount;
     public final int NUMBER_PER_SCREEN = 16;
     private List<GridView> gridViewList;
